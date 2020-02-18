@@ -21,6 +21,8 @@ from __future__ import print_function
 
 import contextlib
 
+import tensorflow.compat.v1 as tf
+
 from tensorflow.python.framework import ops
 from tensorflow.python.ops import control_flow_ops
 from tensorflow.python.ops import gen_resource_variable_ops
@@ -42,7 +44,7 @@ def _enclosing_tpu_context():
   return context
 
 
-class ReplicatedVariable(object):
+class ReplicatedVariable(tf.types.Tensor):
   """A replicated variable for use on TPUs.
 
   When accessed inside a tpu.replicate() context, this variable acts as if it
@@ -204,4 +206,3 @@ def _tensor_conversion(var, dtype=None, name=None, as_ref=False):
 
 
 ops.register_tensor_conversion_function(ReplicatedVariable, _tensor_conversion)
-ops.register_dense_tensor_like_type(ReplicatedVariable)
